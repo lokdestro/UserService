@@ -1,0 +1,12 @@
+
+spring.application.name=UserService
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/{DB_NAME}
+spring.datasource.username={DB_USERNAME}
+spring.datasource.password={DB_PASSWORD}
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+server.port={SERVER_PORT}
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update

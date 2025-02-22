@@ -1,22 +1,27 @@
 package com.example.UserService.services.user;
 
 import com.example.UserService.domain.dto.UpdateRequest;
+import com.example.UserService.services.minio.MinioService;
 import com.example.UserService.domain.model.User;
 import com.example.UserService.repositories.UserRepo;
+import com.example.UserService.services.minio.MinioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 public class UserService {
 
     private final UserRepo userRepo;
+    private final MinioService minioService;
 
-    @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, MinioService minioService) {
         this.userRepo = userRepo;
+        this.minioService = minioService;
     }
 
     public User GetByNumber(String phoneNumber) {
@@ -49,9 +54,11 @@ public class UserService {
         }
     }
 
-    public void Update(UpdateRequest updateRequest) {
-        User user = GetByNumber(updateRequest.getPhoneNumber());
+    public void Update(UpdateRequest updateRequest) throws IOException {
+        System.out.println("UPDATE 1");
+        User user = GetCurrentUser();
         System.out.println("UPDATE 2");
+        System.out.println(user.getName());
         if (updateRequest.getName() != null && !updateRequest.getName().isEmpty()) {
             user.setName(updateRequest.getName());
         }
@@ -61,7 +68,14 @@ public class UserService {
         }
 
         if (updateRequest.getPhoto() != null && !updateRequest.getPhoto().isEmpty()) {
-            user.setPhoto(updateRequest.getPhoto());
+            System.out.println("PHOTO");
+            user.setPhoto(minioService.uploadFile(
+                    "photo",
+                    updateRequest.getPhoto().getOriginalFilename(),
+                    updateRequest.getPhoto().getInputStream(),
+                    updateRequest.getPhoto().getSize(),
+                    updateRequest.getPhoto().getContentType()
+            ));
         }
 
         if (updateRequest.getPhoneNumber() != null && !updateRequest.getPhoneNumber().isEmpty()) {

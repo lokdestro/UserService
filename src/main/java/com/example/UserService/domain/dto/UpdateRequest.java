@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -13,5 +14,5 @@ public class UpdateRequest {
     @JsonProperty("phone_number")
     private String phoneNumber;
     private String email;
-    private String photo;
+    private MultipartFile photo;
 }

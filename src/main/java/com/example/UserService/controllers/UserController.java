@@ -7,6 +7,9 @@ import com.example.UserService.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/user")
@@ -35,9 +38,13 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> update(@RequestBody UpdateRequest UpdateRequest) {
+    public ResponseEntity<String> update(
+            @ModelAttribute UpdateRequest updateRequest,
+            @RequestParam("photo") MultipartFile photo) throws IOException {
         System.out.println("UPDATE");
-        userService.Update(UpdateRequest);
+        updateRequest.setPhoto(photo);
+        System.out.println("UPDATEууу");
+        userService.Update(updateRequest);
         return ResponseEntity.ok("Профиль успешно обновлен");
     }
 

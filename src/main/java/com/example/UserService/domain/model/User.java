@@ -35,6 +35,7 @@ public class User implements UserDetails {
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
+    @Column(name = "photo", length = 1024)
     private String photo;
 
     @Column(name = "deleted_at")

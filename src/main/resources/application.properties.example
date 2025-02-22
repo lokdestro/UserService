@@ -8,5 +8,12 @@ spring.datasource.driver-class-name=org.postgresql.Driver
 
 server.port={SERVER_PORT}
 
+minio.endpoint={endpoint}
+minio.access-key={user}
+minio.secret-key={password}
+
+
+
+
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=update

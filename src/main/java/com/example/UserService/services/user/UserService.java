@@ -20,33 +20,23 @@ public class UserService {
     }
 
     public User GetByNumber(String phoneNumber) {
-        System.out.println("GET BU NUMBER");
-        System.out.println(phoneNumber);
-        var res = userRepo.findByPhoneNumber(phoneNumber).
+        return userRepo.findByPhoneNumber(phoneNumber).
                 orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        System.out.println(res.getName());
-        System.out.println(res.getPassword());
-        return res;
     }
 
     public User GetCurrentUser() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("GET 1");
         if (authentication != null && authentication.getPrincipal() instanceof User) {
             String phoneNumber = (String) ((User) authentication.getPrincipal()).getPhoneNumber();
-            System.out.println("GET 3");
             return GetByNumber(phoneNumber);
         }
-        System.out.println("GET 2");
         throw new UsernameNotFoundException("Current user not found");
     }
 
     public User Create(User user) {
-        System.out.println("USER SERVICE");
         if (userRepo.existsByPhoneNumber(user.getPhoneNumber())) {
             throw new RuntimeException("Пользователь с таким номером уже существует");
         }
-        System.out.println("USER SERVICE1");
         return userRepo.save(user);
     }
 
@@ -61,7 +51,7 @@ public class UserService {
 
     public void Update(UpdateRequest updateRequest) {
         User user = GetByNumber(updateRequest.getPhoneNumber());
-
+        System.out.println("UPDATE 2");
         if (updateRequest.getName() != null && !updateRequest.getName().isEmpty()) {
             user.setName(updateRequest.getName());
         }
@@ -77,7 +67,7 @@ public class UserService {
         if (updateRequest.getPhoneNumber() != null && !updateRequest.getPhoneNumber().isEmpty()) {
             user.setPhoneNumber(updateRequest.getPhoneNumber());
         }
-
+        System.out.println("UPDATE 3");
         userRepo.save(user);
     }
 

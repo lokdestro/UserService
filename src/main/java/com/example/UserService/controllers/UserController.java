@@ -36,6 +36,7 @@ public class UserController {
 
     @PostMapping("/update")
     public ResponseEntity<String> update(@RequestBody UpdateRequest UpdateRequest) {
+        System.out.println("UPDATE");
         userService.Update(UpdateRequest);
         return ResponseEntity.ok("Профиль успешно обновлен");
     }

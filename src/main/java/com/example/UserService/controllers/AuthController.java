@@ -17,17 +17,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<JwtAuthResponse> signUp(@RequestBody SignUpRequest request) {
-        System.out.println("CONTROLLER");
         JwtAuthResponse response = authenticationService.SignUp(request);
-        System.out.println("RESPONSE: " + response);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthResponse> signIn(@RequestBody SignInRequest request) {
-        System.out.println("CONTROLLER");
         JwtAuthResponse response = authenticationService.signIn(request);
-        System.out.println("END SIGNIN");
         return ResponseEntity.ok(response);
     }
 }

@@ -3,7 +3,8 @@ package com.example.UserService.controllers;
 import com.example.UserService.domain.dto.DeleteRequest;
 import com.example.UserService.domain.dto.GetResponse;
 import com.example.UserService.domain.dto.UpdateRequest;
-import com.example.UserService.services.user.UserService;
+import com.example.UserService.services.user.UserSerivce;
+import com.example.UserService.services.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +16,10 @@ import java.io.IOException;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService;
+    private final UserSerivce userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -41,9 +42,7 @@ public class UserController {
     public ResponseEntity<String> update(
             @ModelAttribute UpdateRequest updateRequest,
             @RequestParam("photo") MultipartFile photo) throws IOException {
-        System.out.println("UPDATE");
         updateRequest.setPhoto(photo);
-        System.out.println("UPDATEууу");
         userService.Update(updateRequest);
         return ResponseEntity.ok("Профиль успешно обновлен");
     }

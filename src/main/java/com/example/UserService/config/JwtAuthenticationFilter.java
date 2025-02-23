@@ -1,7 +1,7 @@
 package com.example.UserService.config;
 
 import com.example.UserService.services.auth.JwtService;
-import com.example.UserService.services.user.UserService;
+import com.example.UserService.services.user.UserSerivce;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String BEARER_PREFIX = "Bearer ";
     public static final String HEADER_NAME = "Authorization";
     private final JwtService jwtService;
-    private final UserService userService;
+    private final UserSerivce userService;
 
     @Override
     protected void doFilterInternal(

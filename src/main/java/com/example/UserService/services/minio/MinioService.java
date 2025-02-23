@@ -16,7 +16,6 @@ public class MinioService {
 
     public String uploadFile(String bucketName, String objectName, InputStream inputStream, long size, String contentType) {
         try {
-            // Загружаем файл
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
@@ -26,21 +25,13 @@ public class MinioService {
                             .build()
             );
 
-            // Получаем временный URL на файл
-            String url = minioClient.getPresignedObjectUrl(
-                    GetPresignedObjectUrlArgs.builder()
-                            .method(Method.GET)
-                            .bucket(bucketName)
-                            .object(objectName)
-                            .expiry(24 * 60 * 60) // URL будет действителен в течение 24 часов
-                            .build()
-            );
+            String url = "http://localhost:9000/" + bucketName + "/" + objectName;
 
             System.out.println("File uploaded successfully. URL: " + url);
             return url;
         } catch (Exception e) {
             System.err.println("Error encountered: " + e);
-            return null; // Можно выбросить исключение или вернуть более подробное сообщение об ошибке
+            return null;
         }
     }
 }

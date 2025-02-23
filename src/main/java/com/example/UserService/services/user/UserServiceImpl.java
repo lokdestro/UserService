@@ -4,9 +4,8 @@ import com.example.UserService.domain.dto.UpdateRequest;
 import com.example.UserService.services.minio.MinioService;
 import com.example.UserService.domain.model.User;
 import com.example.UserService.repositories.UserRepo;
-import com.example.UserService.services.minio.MinioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -14,12 +13,12 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements UserSerivce {
 
     private final UserRepo userRepo;
     private final MinioService minioService;
 
-    public UserService(UserRepo userRepo, MinioService minioService) {
+    public UserServiceImpl(UserRepo userRepo, MinioService minioService) {
         this.userRepo = userRepo;
         this.minioService = minioService;
     }
@@ -55,9 +54,7 @@ public class UserService {
     }
 
     public void Update(UpdateRequest updateRequest) throws IOException {
-        System.out.println("UPDATE 1");
         User user = GetCurrentUser();
-        System.out.println("UPDATE 2");
         System.out.println(user.getName());
         if (updateRequest.getName() != null && !updateRequest.getName().isEmpty()) {
             user.setName(updateRequest.getName());
@@ -68,7 +65,6 @@ public class UserService {
         }
 
         if (updateRequest.getPhoto() != null && !updateRequest.getPhoto().isEmpty()) {
-            System.out.println("PHOTO");
             user.setPhoto(minioService.uploadFile(
                     "photo",
                     updateRequest.getPhoto().getOriginalFilename(),
@@ -81,11 +77,15 @@ public class UserService {
         if (updateRequest.getPhoneNumber() != null && !updateRequest.getPhoneNumber().isEmpty()) {
             user.setPhoneNumber(updateRequest.getPhoneNumber());
         }
-        System.out.println("UPDATE 3");
         userRepo.save(user);
     }
 
     public UserDetailsService userDetailsService() {
         return this::GetByNumber;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }

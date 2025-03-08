@@ -1,4 +1,3 @@
-
 spring.application.name=UserService
 
 spring.datasource.url=jdbc:postgresql://localhost:5432/{DB_NAME}

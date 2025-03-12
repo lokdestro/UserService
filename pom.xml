@@ -28,6 +28,7 @@
     </scm>
     <properties>
         <java.version>23</java.version>
+        <spring-boot.build-image.imageName>userservice-app</spring-boot.build-image.imageName>
     </properties>
     <dependencies>
         <dependency>
@@ -116,33 +117,33 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>userservice-app</name>
+                    </image>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>repackage</id>
                         <goals>
-                            <goal>repackage</goal>
+                            <goal>build-image</goal>
                         </goals>
-                        <configuration>
-                            <classifier>exec</classifier>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.example.UserService.UserServiceApplication</mainClass> <!-- Используйте полный путь к вашему классу с методом main -->
-                        </manifest>
-                    </archive>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.36</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-
-
 </project>
